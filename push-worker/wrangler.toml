@@ -1,0 +1,22 @@
+name = "crown-zones-push"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+# Daily at 15:00 UTC (~8am Pacific / 11am Eastern / 4pm London). Adjust as you like.
+[triggers]
+crons = ["0 15 * * *"]
+
+# Create with: wrangler kv namespace create SUBSCRIPTIONS
+# then paste the returned id below.
+[[kv_namespaces]]
+binding = "SUBSCRIPTIONS"
+id = "bfe179d4f4e3462c96afd976454d6955"
+
+[vars]
+# Must match the VAPID_PUBLIC_KEY embedded in ../index.html.
+VAPID_PUBLIC_KEY = "BCkdEXs53xdwyu5VTHNJlwhyJ8ZP_U2bs19vAsnZ7Q6FHeHJD9tTEsR4QGR968mA6ogqfeTAhu3H3HajWPbFz-o"
+VAPID_SUBJECT = "mailto:anthonydeganijr@gmail.com"
+ALLOWED_ORIGIN = "https://anthonydeganijr-bot.github.io"
+
+# VAPID_PRIVATE_KEY is a secret (JWK JSON string), not a var — set it with:
+# wrangler secret put VAPID_PRIVATE_KEY
