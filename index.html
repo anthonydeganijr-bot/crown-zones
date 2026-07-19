@@ -202,7 +202,7 @@
     ·
     <button id="notifyBtn" class="support-link hidden">🔔 Get a daily reminder</button>
     <br>
-    <a class="support-link" href="../word-ladder/">🪜 Play Word Ladder</a>
+    <a class="support-link" href="../">🎮 More Games</a>
     ·
     <a class="support-link" href="privacy.html">Privacy Policy</a>
   </footer>
@@ -228,9 +228,10 @@
     <h2>📲 Get Reminders</h2>
     <p>To get a daily reminder, add Crown Zones to your Home Screen. It only takes two taps:</p>
     <ol class="big-steps">
-      <li>Tap the <strong>Share</strong> button at the bottom of the screen.</li>
-      <li>Scroll down and tap <strong>"Add to Home Screen"</strong>.</li>
+      <li id="addToHomeStep1"></li>
+      <li id="addToHomeStep2"></li>
     </ol>
+    <p class="modal-foot hidden" id="addToHomeTip"></p>
     <p class="modal-foot">Then open Crown Zones from your Home Screen icon and tap the reminder button there.</p>
     <button class="btn-primary" id="addToHomeCloseBtn" style="width:100%">Got it</button>
   </div>
@@ -249,6 +250,32 @@
   }
   function isIOS() {
     return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  }
+
+  // "Add to Home Screen" lives in a different place depending on which browser is
+  // actually running (they're all still Safari's WebKit engine under iOS's hood, but
+  // each wraps its own UI around it) -- generic instructions sent people hunting.
+  function iosAddToHomeInstructions() {
+    if (/CriOS/.test(navigator.userAgent)) {
+      return {
+        step1: 'Tap the <strong>Share</strong> icon (a square with an arrow) in the <strong>top-right</strong> corner.',
+        step2: 'Scroll down and tap <strong>"Add to Home Screen"</strong>.',
+        tip: "",
+      };
+    }
+    if (/FxiOS/.test(navigator.userAgent) || /EdgiOS/.test(navigator.userAgent)) {
+      return {
+        step1: 'Tap the <strong>menu</strong> (•••) or <strong>Share</strong> icon.',
+        step2: 'Look for <strong>"Share..."</strong> then <strong>"Add to Home Screen"</strong>.',
+        tip: "",
+      };
+    }
+    // Safari (the default browser on iOS, and what most people are using)
+    return {
+      step1: 'Tap the <strong>Share</strong> icon (a square with an arrow) at the <strong>bottom</strong> of the screen.',
+      step2: 'Tap <strong>"Add to Home Screen"</strong>.',
+      tip: 'Don\'t see it in the list? Scroll to the very bottom and tap <strong>"Edit Actions..."</strong>, then tap the ➕ next to "Add to Home Screen" — then go back and tap it.',
+    };
   }
 
   // ---------- Puzzle pool ----------
@@ -287,11 +314,31 @@
     const key = todayKey();
     const rng = mulberry32(hashString("crown-zones-" + key));
     const idx = Math.floor(rng() * POOL.length);
-    return { ...decodePuzzle(POOL[idx]), key };
+    return { ...decodePuzzle(POOL[idx]), key, poolIndex: idx };
   }
   function randomPuzzle() {
     const idx = Math.floor(Math.random() * POOL.length);
-    return { ...decodePuzzle(POOL[idx]), key: "random-" + Date.now() };
+    return { ...decodePuzzle(POOL[idx]), key: "random-" + Date.now(), poolIndex: idx };
+  }
+
+  // Reconstructs a specific shared puzzle from a ?p=<pool index> URL param. Returns null
+  // if missing/out of range, so the caller can silently fall back to the daily puzzle.
+  function puzzleFromUrl() {
+    const params = new URLSearchParams(location.search);
+    const raw = params.get("p");
+    if (raw == null) return null;
+    const idx = parseInt(raw, 10);
+    if (!Number.isInteger(idx) || idx < 0 || idx >= POOL.length) return null;
+    return { ...decodePuzzle(POOL[idx]), key: "shared-" + idx, poolIndex: idx };
+  }
+
+  // Daily puzzles are the same for everyone, so the plain URL is enough. Random puzzles
+  // aren't -- without the pool index encoded in the link, a friend who clicks a shared
+  // random-puzzle result just lands on today's daily puzzle instead of the one that was
+  // actually solved, which defeats the "can you beat me?" challenge entirely.
+  function shareUrlFor() {
+    if (mode !== "random") return GAME_URL;
+    return `${GAME_URL}?p=${puzzle.poolIndex}`;
   }
 
   // ---------- Game state ----------
@@ -334,6 +381,9 @@
     installBannerClose: document.getElementById("installBannerClose"),
     addToHomeModal: document.getElementById("addToHomeModal"),
     addToHomeCloseBtn: document.getElementById("addToHomeCloseBtn"),
+    addToHomeStep1: document.getElementById("addToHomeStep1"),
+    addToHomeStep2: document.getElementById("addToHomeStep2"),
+    addToHomeTip: document.getElementById("addToHomeTip"),
   };
 
   function cellBorder(n, regions, r, c) {
@@ -533,11 +583,12 @@
       : `I solved ${puzzleLabel} in ${timeStr} (${mistakes} mistake${mistakes === 1 ? "" : "s"}) 👑 Can you beat me?`;
     const rowEmoji = puzzle.solution.map((c, r) => REGION_EMOJI[puzzle.regions[r][c]]).join("");
     const sizeLine = `${puzzle.n}×${puzzle.n} zones`;
-    currentShareText = `${challenge}\n${sizeLine}\n${rowEmoji}\n${GAME_URL}`;
+    const shareUrl = shareUrlFor();
+    currentShareText = `${challenge}\n${sizeLine}\n${rowEmoji}\n${shareUrl}`;
     els.shareChallenge.textContent = challenge;
     els.shareChain.textContent = sizeLine;
     els.shareGrid.textContent = rowEmoji;
-    els.shareLink.textContent = GAME_URL;
+    els.shareLink.textContent = shareUrl;
 
     if (!alreadySolved) bumpStreakOnWin();
     persistDailyProgress();
@@ -616,7 +667,18 @@
       localStorage.setItem("crownzones:dismissedInstall", "1");
     });
   }
-  function showAddToHomeScreenModal() { els.addToHomeModal.classList.remove("hidden"); }
+  function showAddToHomeScreenModal() {
+    const instr = iosAddToHomeInstructions();
+    els.addToHomeStep1.innerHTML = instr.step1;
+    els.addToHomeStep2.innerHTML = instr.step2;
+    if (instr.tip) {
+      els.addToHomeTip.innerHTML = "💡 " + instr.tip;
+      els.addToHomeTip.classList.remove("hidden");
+    } else {
+      els.addToHomeTip.classList.add("hidden");
+    }
+    els.addToHomeModal.classList.remove("hidden");
+  }
   function hideAddToHomeScreenModal() { els.addToHomeModal.classList.add("hidden"); }
 
   // ---------- Daily reminder (push notifications) ----------
@@ -704,7 +766,8 @@
   // ---------- Init ----------
   els.todayLabel.textContent = new Date().toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" });
   updateStreakDisplay();
-  startPuzzle(dailyPuzzle(), "daily");
+  const sharedPuzzle = puzzleFromUrl();
+  startPuzzle(sharedPuzzle || dailyPuzzle(), sharedPuzzle ? "random" : "daily");
   initNotifyButton();
   initInstallBanner();
   if (!localStorage.getItem("crownzones:seenHowToPlay")) {
