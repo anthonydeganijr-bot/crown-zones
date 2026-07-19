@@ -399,7 +399,13 @@
 
   function renderBoard() {
     const n = puzzle.n;
-    const size = Math.min(46, Math.floor(400 / n));
+    // Board width was a hardcoded 400px budget regardless of actual screen size --
+    // fine on desktop, but wider than many phone screens, causing horizontal overflow.
+    // Measure the real available width (the .panel's content width, minus its own
+    // 20px-per-side padding) instead.
+    const panelWidth = els.board.parentElement.clientWidth || 320;
+    const availableWidth = Math.max(180, panelWidth - 40);
+    const size = Math.min(46, Math.floor(availableWidth / n));
     els.board.style.gridTemplateColumns = `repeat(${n}, ${size}px)`;
     els.board.innerHTML = "";
     for (let r = 0; r < n; r++) {
@@ -776,6 +782,14 @@
   if (!localStorage.getItem("crownzones:seenHowToPlay")) {
     showHowToPlay();
   }
+
+  // Re-measure and redraw on resize/orientation change so the board keeps fitting
+  // the actual screen width instead of the size computed at the last render.
+  let resizeTimer = null;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => { if (puzzle) renderBoard(); }, 150);
+  });
 })();
 </script>
 </body>
