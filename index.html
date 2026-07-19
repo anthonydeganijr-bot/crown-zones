@@ -560,13 +560,16 @@
     }
   }
 
-  function persistDailyProgress() {
+  function persistDailyProgress(explicitElapsedMs) {
     if (mode !== "daily") return;
-    saveState(puzzle.key, {
-      cellState, mistakes,
-      solvedFlag: solved,
-      elapsedMs: solved ? Date.now() - startTime : 0,
-    });
+    // Prefer the explicit value when the caller has one (e.g. showWin already resolved
+    // the correct elapsed time). Recomputing from startTime here is only safe when
+    // nothing has reset it since the puzzle actually started -- startPuzzle() always
+    // calls startTimer() (resetting startTime) before it knows whether it's about to
+    // restore an already-solved puzzle, so recomputing unconditionally silently
+    // overwrote a correctly-saved time with ~0ms every time a solved puzzle reloaded.
+    const elapsedMs = explicitElapsedMs != null ? explicitElapsedMs : (solved ? Date.now() - startTime : 0);
+    saveState(puzzle.key, { cellState, mistakes, solvedFlag: solved, elapsedMs });
   }
 
   function showWin(elapsedOverride, alreadySolved) {
@@ -591,7 +594,7 @@
     els.shareLink.textContent = shareUrl;
 
     if (!alreadySolved) bumpStreakOnWin();
-    persistDailyProgress();
+    persistDailyProgress(elapsed);
   }
 
   function giveHint() {
