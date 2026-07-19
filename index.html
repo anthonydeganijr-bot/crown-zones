@@ -551,7 +551,9 @@
       if (saved && saved.solvedFlag) {
         cellState = saved.cellState;
         mistakes = saved.mistakes || 0;
+        hintsLeft = saved.hintsLeft != null ? saved.hintsLeft : 3;
         els.mistakeCountEl.textContent = mistakes;
+        els.hintsLeftEl.textContent = hintsLeft;
         renderBoard();
         stopTimer();
         els.timerDisplay.textContent = formatTime(saved.elapsedMs || 0);
@@ -560,7 +562,10 @@
       } else if (saved && saved.cellState) {
         cellState = saved.cellState;
         mistakes = saved.mistakes || 0;
+        hintsLeft = saved.hintsLeft != null ? saved.hintsLeft : 3;
         els.mistakeCountEl.textContent = mistakes;
+        els.hintsLeftEl.textContent = hintsLeft;
+        els.hintBtn.disabled = hintsLeft <= 0;
         renderBoard();
       }
     }
@@ -575,7 +580,7 @@
     // restore an already-solved puzzle, so recomputing unconditionally silently
     // overwrote a correctly-saved time with ~0ms every time a solved puzzle reloaded.
     const elapsedMs = explicitElapsedMs != null ? explicitElapsedMs : (solved ? Date.now() - startTime : 0);
-    saveState(puzzle.key, { cellState, mistakes, solvedFlag: solved, elapsedMs });
+    saveState(puzzle.key, { cellState, mistakes, hintsLeft, solvedFlag: solved, elapsedMs });
   }
 
   function showWin(elapsedOverride, alreadySolved) {
@@ -584,12 +589,23 @@
     els.winPanel.classList.remove("hidden");
     const elapsed = elapsedOverride != null ? elapsedOverride : Date.now() - startTime;
     const timeStr = formatTime(elapsed);
-    els.winSummary.textContent = `${timeStr} · ${mistakes} mistake${mistakes === 1 ? "" : "s"}`;
+    // hintsLeft counts down from 3, so this is exactly how many were used -- hints
+    // place the correct crown directly, so a hint-heavy solve used to still show up
+    // as "no mistakes" with nothing indicating it wasn't actually self-solved.
+    const hintsUsed = 3 - hintsLeft;
+    const perfect = mistakes === 0 && hintsUsed === 0;
+    const hintTail = hintsUsed > 0 ? ` · ${hintsUsed} hint${hintsUsed === 1 ? "" : "s"} used` : "";
+    els.winSummary.textContent = `${timeStr} · ${mistakes} mistake${mistakes === 1 ? "" : "s"}${hintTail}`;
 
     const puzzleLabel = mode === "daily" ? "today's Crown Zones" : "a Crown Zones puzzle";
-    const challenge = mistakes === 0
-      ? `I solved ${puzzleLabel} in ${timeStr} with no mistakes 👑 Think you can match it?`
-      : `I solved ${puzzleLabel} in ${timeStr} (${mistakes} mistake${mistakes === 1 ? "" : "s"}) 👑 Can you beat me?`;
+    let challenge;
+    if (perfect) {
+      challenge = `I solved ${puzzleLabel} in ${timeStr} with no mistakes 👑 Think you can match it?`;
+    } else if (hintsUsed > 0) {
+      challenge = `I solved ${puzzleLabel} in ${timeStr} (used ${hintsUsed} hint${hintsUsed === 1 ? "" : "s"}) 👑 Can you beat me without hints?`;
+    } else {
+      challenge = `I solved ${puzzleLabel} in ${timeStr} (${mistakes} mistake${mistakes === 1 ? "" : "s"}) 👑 Can you beat me?`;
+    }
     const rowEmoji = puzzle.solution.map((c, r) => REGION_EMOJI[puzzle.regions[r][c]]).join("");
     const sizeLine = `${puzzle.n}×${puzzle.n} zones`;
     const shareUrl = shareUrlFor();
