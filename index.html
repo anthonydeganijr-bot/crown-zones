@@ -59,7 +59,6 @@
   }
   .install-close:hover { color: var(--ink); }
   h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.02em; }
-  .tagline { color: var(--sub); font-size: 14px; margin: 0; }
   .datebar {
     display: flex; justify-content: center; gap: 8px; align-items: center;
     margin-top: 10px; font-size: 13px; color: var(--sub);
@@ -85,8 +84,7 @@
   .cell.conflict::after {
     content: ""; position: absolute; inset: 3px; border: 2px solid var(--bad); border-radius: 6px;
   }
-  .cell .mark { color: rgba(0,0,0,0.35); font-weight: 700; font-size: 16px; }
-  @media (prefers-color-scheme: dark) { .cell .mark { color: rgba(255,255,255,0.4); } }
+  .cell .mark { color: rgba(255,255,255,0.95); font-weight: 800; font-size: 17px; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
   .toolbar { display: flex; gap: 8px; margin-top: 16px; }
   button {
     border: none; border-radius: 12px; font-weight: 600; cursor: pointer;
@@ -140,8 +138,29 @@
   .modal-panel ul, .modal-panel ol { margin: 0 0 14px; padding-left: 20px; font-size: 14px; color: var(--ink); line-height: 1.6; }
   .modal-panel ol.big-steps { font-size: 17px; line-height: 1.8; }
   .modal-foot { color: var(--sub); font-size: 12px; text-align: center; margin: 0 0 16px; }
-  .mini-board { display: grid; margin: 0 auto 14px; width: fit-content; }
-  .mini-cell { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .mini-board { display: grid; margin: 0 auto; width: fit-content; }
+  .mini-cell { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 15px; position: relative; border: 1px solid rgba(255,255,255,0.5); }
+  .mini-cell.conflict-demo::after {
+    content: ""; position: absolute; inset: 1px; border: 2px solid var(--bad); border-radius: 4px;
+  }
+  .rules-visual { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin: 0 0 16px; }
+  .rule-example { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .rule-caption { margin: 0; font-size: 12px; color: var(--sub); text-align: center; max-width: 96px; line-height: 1.3; }
+  .level-row { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+  .level-label { font-size: 12px; color: var(--sub); flex-shrink: 0; }
+  .btn-level {
+    flex: 1; background: transparent; color: var(--sub); border: 1px solid var(--tile-border);
+    border-radius: 10px; padding: 8px 4px; font-size: 12px; font-weight: 600;
+  }
+  .btn-level:hover { color: var(--ink); border-color: var(--accent); }
+  .rules-visual-compact { gap: 10px; margin: 8px 0 0; }
+  .rule-example-sm { gap: 2px; }
+  .mini-board-sm .mini-cell { width: 18px; height: 18px; font-size: 12px; }
+  .rule-caption-mini { margin: 0; font-size: 11px; color: var(--sub); }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
 </style>
 </head>
 <body>
@@ -155,7 +174,51 @@
   <header>
     <button id="helpBtn" class="help-btn" aria-label="How to play">?</button>
     <h1>👑 Crown Zones</h1>
-    <p class="tagline">One crown per zone. No shared row, column, or touching corners.</p>
+    <div class="rules-visual rules-visual-compact" aria-hidden="true">
+      <div class="rule-example rule-example-sm">
+        <div class="mini-board mini-board-sm" style="grid-template-columns:repeat(3,18px)">
+          <div class="mini-cell" style="background:#f28b82">👑</div>
+          <div class="mini-cell" style="background:#fbbc04"></div>
+          <div class="mini-cell" style="background:#4b6cff"></div>
+          <div class="mini-cell" style="background:#f28b82"></div>
+          <div class="mini-cell" style="background:#fbbc04">👑</div>
+          <div class="mini-cell" style="background:#4b6cff"></div>
+          <div class="mini-cell" style="background:#f28b82"></div>
+          <div class="mini-cell" style="background:#fbbc04"></div>
+          <div class="mini-cell" style="background:#4b6cff">👑</div>
+        </div>
+        <p class="rule-caption-mini">✅</p>
+      </div>
+      <div class="rule-example rule-example-sm">
+        <div class="mini-board mini-board-sm" style="grid-template-columns:repeat(3,18px)">
+          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+        </div>
+        <p class="rule-caption-mini">✕</p>
+      </div>
+      <div class="rule-example rule-example-sm">
+        <div class="mini-board mini-board-sm" style="grid-template-columns:repeat(3,18px)">
+          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+        </div>
+        <p class="rule-caption-mini">✕</p>
+      </div>
+    </div>
+    <p class="visually-hidden">One crown per zone. No shared row, column, or touching corners.</p>
     <div class="datebar">
       <span id="todayLabel"></span>
       <span class="streak">🔥 <span id="streakCount">0</span> day streak</span>
@@ -190,7 +253,12 @@
       </div>
       <div class="toolbar">
         <button class="btn-primary" id="shareBtn" style="flex:1">🔗 Share Result</button>
-        <button class="btn-ghost" id="randomBtn">🎲 New Puzzle</button>
+      </div>
+      <div class="level-row">
+        <span class="level-label">🎲 New puzzle:</span>
+        <button class="btn-level" id="levelEasyBtn" data-n="6">Easy 6×6</button>
+        <button class="btn-level" id="levelMediumBtn" data-n="7">Medium 7×7</button>
+        <button class="btn-level" id="levelHardBtn" data-n="8">Hard 8×8</button>
       </div>
     </div>
   </div>
@@ -212,12 +280,51 @@
   <div class="modal-panel">
     <h2>👑 How to Play</h2>
     <p>Place exactly one crown in every colored zone.</p>
-    <ul>
-      <li>No two crowns can share a <strong>row</strong> or <strong>column</strong>.</li>
-      <li>No two crowns can touch, even <strong>diagonally</strong>.</li>
-      <li>Tap a cell to cycle: empty → ✕ mark (a note to yourself) → 👑 crown → empty.</li>
-      <li>💡 Stuck? Use a hint — you get 3 per puzzle.</li>
-    </ul>
+    <div class="rules-visual">
+      <div class="rule-example">
+        <div class="mini-board" style="grid-template-columns:repeat(3,28px)">
+          <div class="mini-cell" style="background:#f28b82">👑</div>
+          <div class="mini-cell" style="background:#fbbc04"></div>
+          <div class="mini-cell" style="background:#4b6cff"></div>
+          <div class="mini-cell" style="background:#f28b82"></div>
+          <div class="mini-cell" style="background:#fbbc04">👑</div>
+          <div class="mini-cell" style="background:#4b6cff"></div>
+          <div class="mini-cell" style="background:#f28b82"></div>
+          <div class="mini-cell" style="background:#fbbc04"></div>
+          <div class="mini-cell" style="background:#4b6cff">👑</div>
+        </div>
+        <p class="rule-caption">✅ One crown per zone</p>
+      </div>
+      <div class="rule-example">
+        <div class="mini-board" style="grid-template-columns:repeat(3,28px)">
+          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+        </div>
+        <p class="rule-caption">✕ Same row or column</p>
+      </div>
+      <div class="rule-example">
+        <div class="mini-board" style="grid-template-columns:repeat(3,28px)">
+          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+        </div>
+        <p class="rule-caption">✕ Touching, even diagonally</p>
+      </div>
+    </div>
+    <p>Tap a cell to cycle: empty → ✕ note → 👑 crown. 💡 Stuck? You get 3 hints per puzzle.</p>
     <p class="modal-foot">One shared daily puzzle for everyone · unlimited random puzzles anytime.</p>
     <button class="btn-primary" id="howToPlayCloseBtn" style="width:100%">Let's play!</button>
   </div>
@@ -310,14 +417,26 @@
     const d = new Date();
     return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
   }
+  // Groups pool indices by board size (n) so a chosen difficulty (6/7/8) can pick
+  // only from puzzles of that size instead of the whole mixed pool.
+  const POOL_BY_SIZE = {};
+  POOL.forEach((entry, idx) => {
+    const n = entry[0];
+    (POOL_BY_SIZE[n] = POOL_BY_SIZE[n] || []).push(idx);
+  });
+  // The daily puzzle is always 6x6 -- it's the one everyone gets by default (no
+  // difficulty choice), so it should stay approachable rather than sometimes
+  // landing on a harder 7x7/8x8 board.
   function dailyPuzzle() {
     const key = todayKey();
     const rng = mulberry32(hashString("crown-zones-" + key));
-    const idx = Math.floor(rng() * POOL.length);
+    const pool = POOL_BY_SIZE[6];
+    const idx = pool[Math.floor(rng() * pool.length)];
     return { ...decodePuzzle(POOL[idx]), key, poolIndex: idx };
   }
-  function randomPuzzle() {
-    const idx = Math.floor(Math.random() * POOL.length);
+  function randomPuzzle(n) {
+    const candidates = (n && POOL_BY_SIZE[n]) ? POOL_BY_SIZE[n] : POOL.map((_, i) => i);
+    const idx = candidates[Math.floor(Math.random() * candidates.length)];
     return { ...decodePuzzle(POOL[idx]), key: "random-" + Date.now(), poolIndex: idx };
   }
 
@@ -370,7 +489,9 @@
     shareGrid: document.getElementById("shareGrid"),
     shareLink: document.getElementById("shareLink"),
     shareBtn: document.getElementById("shareBtn"),
-    randomBtn: document.getElementById("randomBtn"),
+    levelEasyBtn: document.getElementById("levelEasyBtn"),
+    levelMediumBtn: document.getElementById("levelMediumBtn"),
+    levelHardBtn: document.getElementById("levelHardBtn"),
     notifyBtn: document.getElementById("notifyBtn"),
     helpBtn: document.getElementById("helpBtn"),
     howToPlay: document.getElementById("howToPlay"),
@@ -386,15 +507,9 @@
     addToHomeTip: document.getElementById("addToHomeTip"),
   };
 
-  function cellBorder(n, regions, r, c) {
-    const region = regions[r][c];
-    const thick = "2px solid var(--ink)";
-    const thin = "1px solid rgba(128,128,128,0.18)";
-    const top = (r === 0 || regions[r - 1][c] !== region) ? thick : thin;
-    const left = (c === 0 || regions[r][c - 1] !== region) ? thick : thin;
-    const bottom = (r === n - 1 || regions[r + 1][c] !== region) ? thick : thin;
-    const right = (c === n - 1 || regions[r][c + 1] !== region) ? thick : thin;
-    return `border-top:${top};border-left:${left};border-bottom:${bottom};border-right:${right};`;
+  function cellBorder() {
+    const thin = "1.5px solid rgba(255,255,255,0.55)";
+    return `border:${thin};`;
   }
 
   function renderBoard() {
@@ -415,7 +530,7 @@
         div.style.width = size + "px";
         div.style.height = size + "px";
         div.style.background = REGION_COLORS[puzzle.regions[r][c]];
-        div.style.cssText += cellBorder(n, puzzle.regions, r, c);
+        div.style.cssText += cellBorder();
         const state = cellState[r][c];
         if (state === 1) div.innerHTML = '<span class="mark">✕</span>';
         else if (state === 2) div.textContent = "👑";
@@ -428,7 +543,15 @@
 
   function onCellClick(r, c) {
     if (solved) return;
-    cellState[r][c] = (cellState[r][c] + 1) % 3;
+    const next = (cellState[r][c] + 1) % 3;
+    cellState[r][c] = next;
+    // Only a freshly-placed crown that conflicts with an existing one counts as a
+    // mistake -- checked at the moment of placement, not on every render, so it's
+    // counted once per bad placement rather than once per frame it stays in conflict.
+    if (next === 2 && conflictsFor(placedCrowns()).has(`${r},${c}`)) {
+      mistakes++;
+      els.mistakeCountEl.textContent = mistakes;
+    }
     renderBoard();
     checkWin();
   }
@@ -639,7 +762,9 @@
   // ---------- Wire up ----------
   els.hintBtn.addEventListener("click", giveHint);
   els.resetBtn.addEventListener("click", () => startPuzzle(puzzle, mode, { fresh: true }));
-  els.randomBtn.addEventListener("click", () => startPuzzle(randomPuzzle(), "random"));
+  els.levelEasyBtn.addEventListener("click", () => startPuzzle(randomPuzzle(6), "random"));
+  els.levelMediumBtn.addEventListener("click", () => startPuzzle(randomPuzzle(7), "random"));
+  els.levelHardBtn.addEventListener("click", () => startPuzzle(randomPuzzle(8), "random"));
   els.helpBtn.addEventListener("click", showHowToPlay);
   els.howToPlayCloseBtn.addEventListener("click", hideHowToPlay);
   els.addToHomeCloseBtn.addEventListener("click", hideAddToHomeScreenModal);
