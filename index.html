@@ -59,7 +59,6 @@
   }
   .install-close:hover { color: var(--ink); }
   h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.02em; }
-  .tagline { color: var(--sub); font-size: 14px; margin: 0; }
   .datebar {
     display: flex; justify-content: center; gap: 8px; align-items: center;
     margin-top: 10px; font-size: 13px; color: var(--sub);
@@ -154,6 +153,14 @@
     border-radius: 10px; padding: 8px 4px; font-size: 12px; font-weight: 600;
   }
   .btn-level:hover { color: var(--ink); border-color: var(--accent); }
+  .rules-visual-compact { gap: 10px; margin: 8px 0 0; }
+  .rule-example-sm { gap: 2px; }
+  .mini-board-sm .mini-cell { width: 18px; height: 18px; font-size: 12px; }
+  .rule-caption-mini { margin: 0; font-size: 11px; color: var(--sub); }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
 </style>
 </head>
 <body>
@@ -167,7 +174,51 @@
   <header>
     <button id="helpBtn" class="help-btn" aria-label="How to play">?</button>
     <h1>👑 Crown Zones</h1>
-    <p class="tagline">One crown per zone. No shared row, column, or touching corners.</p>
+    <div class="rules-visual rules-visual-compact" aria-hidden="true">
+      <div class="rule-example rule-example-sm">
+        <div class="mini-board mini-board-sm" style="grid-template-columns:repeat(3,18px)">
+          <div class="mini-cell" style="background:#f28b82">👑</div>
+          <div class="mini-cell" style="background:#fbbc04"></div>
+          <div class="mini-cell" style="background:#4b6cff"></div>
+          <div class="mini-cell" style="background:#f28b82"></div>
+          <div class="mini-cell" style="background:#fbbc04">👑</div>
+          <div class="mini-cell" style="background:#4b6cff"></div>
+          <div class="mini-cell" style="background:#f28b82"></div>
+          <div class="mini-cell" style="background:#fbbc04"></div>
+          <div class="mini-cell" style="background:#4b6cff">👑</div>
+        </div>
+        <p class="rule-caption-mini">✅</p>
+      </div>
+      <div class="rule-example rule-example-sm">
+        <div class="mini-board mini-board-sm" style="grid-template-columns:repeat(3,18px)">
+          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+        </div>
+        <p class="rule-caption-mini">✕</p>
+      </div>
+      <div class="rule-example rule-example-sm">
+        <div class="mini-board mini-board-sm" style="grid-template-columns:repeat(3,18px)">
+          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+          <div class="mini-cell" style="background:#eef0ff"></div>
+        </div>
+        <p class="rule-caption-mini">✕</p>
+      </div>
+    </div>
+    <p class="visually-hidden">One crown per zone. No shared row, column, or touching corners.</p>
     <div class="datebar">
       <span id="todayLabel"></span>
       <span class="streak">🔥 <span id="streakCount">0</span> day streak</span>
