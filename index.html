@@ -254,12 +254,13 @@
       <div class="toolbar">
         <button class="btn-primary" id="shareBtn" style="flex:1">🔗 Share Result</button>
       </div>
-      <div class="level-row">
-        <span class="level-label">🎲 New puzzle:</span>
-        <button class="btn-level" id="levelEasyBtn" data-n="6">Easy 6×6</button>
-        <button class="btn-level" id="levelMediumBtn" data-n="7">Medium 7×7</button>
-        <button class="btn-level" id="levelHardBtn" data-n="8">Hard 8×8</button>
-      </div>
+    </div>
+
+    <div id="levelRow" class="level-row hidden">
+      <span class="level-label">🎲 New puzzle:</span>
+      <button class="btn-level" id="levelEasyBtn" data-n="6">Easy 6×6</button>
+      <button class="btn-level" id="levelMediumBtn" data-n="7">Medium 7×7</button>
+      <button class="btn-level" id="levelHardBtn" data-n="8">Hard 8×8</button>
     </div>
   </div>
 
@@ -489,6 +490,7 @@
     shareGrid: document.getElementById("shareGrid"),
     shareLink: document.getElementById("shareLink"),
     shareBtn: document.getElementById("shareBtn"),
+    levelRow: document.getElementById("levelRow"),
     levelEasyBtn: document.getElementById("levelEasyBtn"),
     levelMediumBtn: document.getElementById("levelMediumBtn"),
     levelHardBtn: document.getElementById("levelHardBtn"),
@@ -650,6 +652,15 @@
     updateStreakDisplay();
   }
 
+  // The difficulty picker should stay reachable any time you're not stuck on an
+  // unsolved daily -- either you're already playing/won a random puzzle, or you've
+  // just solved the daily and this is how you get to a random one in the first
+  // place. Hiding it only while the daily is still unsolved keeps that entry point
+  // intact instead of hiding it for every daily view.
+  function updateLevelRowVisibility() {
+    els.levelRow.classList.toggle("hidden", !(mode === "random" || solved));
+  }
+
   function startPuzzle(p, m, opts) {
     const fresh = !!(opts && opts.fresh);
     puzzle = p;
@@ -663,6 +674,7 @@
     els.hintBtn.disabled = false;
     els.winPanel.classList.add("hidden");
     els.playArea.classList.remove("hidden");
+    updateLevelRowVisibility();
     setMsg("");
     renderBoard();
     startTimer();
@@ -710,6 +722,7 @@
     stopTimer();
     els.playArea.classList.add("hidden");
     els.winPanel.classList.remove("hidden");
+    updateLevelRowVisibility();
     const elapsed = elapsedOverride != null ? elapsedOverride : Date.now() - startTime;
     const timeStr = formatTime(elapsed);
     // hintsLeft counts down from 3, so this is exactly how many were used -- hints
