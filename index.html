@@ -417,12 +417,6 @@
     const d = new Date();
     return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
   }
-  function dailyPuzzle() {
-    const key = todayKey();
-    const rng = mulberry32(hashString("crown-zones-" + key));
-    const idx = Math.floor(rng() * POOL.length);
-    return { ...decodePuzzle(POOL[idx]), key, poolIndex: idx };
-  }
   // Groups pool indices by board size (n) so a chosen difficulty (6/7/8) can pick
   // only from puzzles of that size instead of the whole mixed pool.
   const POOL_BY_SIZE = {};
@@ -430,6 +424,16 @@
     const n = entry[0];
     (POOL_BY_SIZE[n] = POOL_BY_SIZE[n] || []).push(idx);
   });
+  // The daily puzzle is always 6x6 -- it's the one everyone gets by default (no
+  // difficulty choice), so it should stay approachable rather than sometimes
+  // landing on a harder 7x7/8x8 board.
+  function dailyPuzzle() {
+    const key = todayKey();
+    const rng = mulberry32(hashString("crown-zones-" + key));
+    const pool = POOL_BY_SIZE[6];
+    const idx = pool[Math.floor(rng() * pool.length)];
+    return { ...decodePuzzle(POOL[idx]), key, poolIndex: idx };
+  }
   function randomPuzzle(n) {
     const candidates = (n && POOL_BY_SIZE[n]) ? POOL_BY_SIZE[n] : POOL.map((_, i) => i);
     const idx = candidates[Math.floor(Math.random() * candidates.length)];
@@ -503,15 +507,9 @@
     addToHomeTip: document.getElementById("addToHomeTip"),
   };
 
-  function cellBorder(n, regions, r, c) {
-    const region = regions[r][c];
-    const thick = "2px solid var(--ink)";
+  function cellBorder() {
     const thin = "1.5px solid rgba(255,255,255,0.55)";
-    const top = (r === 0 || regions[r - 1][c] !== region) ? thick : thin;
-    const left = (c === 0 || regions[r][c - 1] !== region) ? thick : thin;
-    const bottom = (r === n - 1 || regions[r + 1][c] !== region) ? thick : thin;
-    const right = (c === n - 1 || regions[r][c + 1] !== region) ? thick : thin;
-    return `border-top:${top};border-left:${left};border-bottom:${bottom};border-right:${right};`;
+    return `border:${thin};`;
   }
 
   function renderBoard() {
@@ -532,7 +530,7 @@
         div.style.width = size + "px";
         div.style.height = size + "px";
         div.style.background = REGION_COLORS[puzzle.regions[r][c]];
-        div.style.cssText += cellBorder(n, puzzle.regions, r, c);
+        div.style.cssText += cellBorder();
         const state = cellState[r][c];
         if (state === 1) div.innerHTML = '<span class="mark">✕</span>';
         else if (state === 2) div.textContent = "👑";
