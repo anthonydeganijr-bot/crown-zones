@@ -167,13 +167,13 @@
 <div class="wrap">
   <div id="installBanner" class="install-banner hidden">
     <span id="installBannerText"></span>
-    <button id="installBtn" class="install-btn hidden">📲 Install</button>
+    <button id="installBtn" class="install-btn hidden">Install</button>
     <button id="installBannerClose" class="install-close" aria-label="Dismiss">✕</button>
   </div>
 
   <header>
     <button id="helpBtn" class="help-btn" aria-label="How to play">?</button>
-    <h1>👑 Crown Zones</h1>
+    <h1>Crown Zones</h1>
     <div class="rules-visual rules-visual-compact" aria-hidden="true">
       <div class="rule-example rule-example-sm">
         <div class="mini-board mini-board-sm" style="grid-template-columns:repeat(3,18px)">
@@ -187,7 +187,7 @@
           <div class="mini-cell" style="background:#fbbc04"></div>
           <div class="mini-cell" style="background:#4b6cff">👑</div>
         </div>
-        <p class="rule-caption-mini">✅</p>
+        <p class="rule-caption-mini">✓</p>
       </div>
       <div class="rule-example rule-example-sm">
         <div class="mini-board mini-board-sm" style="grid-template-columns:repeat(3,18px)">
@@ -221,15 +221,15 @@
     <p class="visually-hidden">One crown per zone. No shared row, column, or touching corners.</p>
     <div class="datebar">
       <span id="todayLabel"></span>
-      <span class="streak">🔥 <span id="streakCount">0</span> day streak</span>
+      <span class="streak"><span id="streakCount">0</span> day streak</span>
     </div>
   </header>
 
   <div class="panel">
     <div class="stat-row">
-      <span>⏱ <strong id="timerDisplay">0:00</strong></span>
-      <span>💡 Hints: <strong id="hintsLeft">3</strong></span>
-      <span>⚠️ Mistakes: <strong id="mistakeCount">0</strong></span>
+      <span><strong id="timerDisplay">0:00</strong></span>
+      <span>Hints: <strong id="hintsLeft">3</strong></span>
+      <span>Mistakes: <strong id="mistakeCount">0</strong></span>
     </div>
 
     <div id="board" class="board"></div>
@@ -237,13 +237,13 @@
     <div id="playArea">
       <div id="msg" class="msg"></div>
       <div class="toolbar">
-        <button class="btn-ghost" id="hintBtn">💡 Hint</button>
-        <button class="btn-ghost" id="resetBtn">↺ Restart</button>
+        <button class="btn-ghost" id="hintBtn">Hint</button>
+        <button class="btn-ghost" id="resetBtn">Restart</button>
       </div>
     </div>
 
     <div id="winPanel" class="win-panel hidden">
-      <h2>🎉 Solved!</h2>
+      <h2>Solved!</h2>
       <p id="winSummary"></p>
       <div class="share-box">
         <p class="share-challenge" id="shareChallenge"></p>
@@ -252,12 +252,12 @@
         <p class="share-link" id="shareLink"></p>
       </div>
       <div class="toolbar">
-        <button class="btn-primary" id="shareBtn" style="flex:1">🔗 Share Result</button>
+        <button class="btn-primary" id="shareBtn" style="flex:1">Share Result</button>
       </div>
     </div>
 
     <div id="levelRow" class="level-row hidden">
-      <span class="level-label">🎲 New puzzle:</span>
+      <span class="level-label">New puzzle:</span>
       <button class="btn-level" id="levelEasyBtn" data-n="6">Easy 6×6</button>
       <button class="btn-level" id="levelMediumBtn" data-n="7">Medium 7×7</button>
       <button class="btn-level" id="levelHardBtn" data-n="8">Hard 8×8</button>
@@ -267,11 +267,11 @@
   <footer>
     One daily puzzle for everyone · unlimited random puzzles anytime
     <br>
-    <a class="support-link" href="https://buymeacoffee.com/anthonydegani" target="_blank" rel="noopener">☕ Support this game</a>
+    <a class="support-link" href="https://buymeacoffee.com/anthonydegani" target="_blank" rel="noopener">Support this game</a>
     ·
-    <button id="notifyBtn" class="support-link hidden">🔔 Get a daily reminder</button>
+    <button id="notifyBtn" class="support-link hidden">Get a daily reminder</button>
     <br>
-    <a class="support-link" href="../">🎮 More Games</a>
+    <a class="support-link" href="../">More Games</a>
     ·
     <a class="support-link" href="privacy.html">Privacy Policy</a>
   </footer>
@@ -279,7 +279,7 @@
 
 <div id="howToPlay" class="modal-overlay hidden">
   <div class="modal-panel">
-    <h2>👑 How to Play</h2>
+    <h2>How to Play</h2>
     <p>Place exactly one crown in every colored zone.</p>
     <div class="rules-visual">
       <div class="rule-example">
@@ -294,7 +294,7 @@
           <div class="mini-cell" style="background:#fbbc04"></div>
           <div class="mini-cell" style="background:#4b6cff">👑</div>
         </div>
-        <p class="rule-caption">✅ One crown per zone</p>
+        <p class="rule-caption">✓ One crown per zone</p>
       </div>
       <div class="rule-example">
         <div class="mini-board" style="grid-template-columns:repeat(3,28px)">
@@ -325,7 +325,7 @@
         <p class="rule-caption">✕ Touching, even diagonally</p>
       </div>
     </div>
-    <p>Tap a cell to cycle: empty → ✕ note → 👑 crown. 💡 Stuck? You get 3 hints per puzzle.</p>
+    <p>Tap a cell to cycle: empty → ✕ note → 👑 crown. Stuck? You get 3 hints per puzzle.</p>
     <p class="modal-foot">One shared daily puzzle for everyone · unlimited random puzzles anytime.</p>
     <button class="btn-primary" id="howToPlayCloseBtn" style="width:100%">Let's play!</button>
   </div>
@@ -333,7 +333,7 @@
 
 <div id="addToHomeModal" class="modal-overlay hidden">
   <div class="modal-panel">
-    <h2>📲 Get Reminders</h2>
+    <h2>Get Reminders</h2>
     <p>To get a daily reminder, add Crown Zones to your Home Screen. It only takes two taps:</p>
     <ol class="big-steps">
       <li id="addToHomeStep1"></li>
@@ -382,7 +382,7 @@
     return {
       step1: 'Tap the <strong>Share</strong> icon (a square with an arrow) at the <strong>bottom</strong> of the screen.',
       step2: 'Tap <strong>"Add to Home Screen"</strong>.',
-      tip: 'Don\'t see it in the list? Scroll to the very bottom and tap <strong>"Edit Actions..."</strong>, then tap the ➕ next to "Add to Home Screen" — then go back and tap it.',
+      tip: 'Don\'t see it in the list? Scroll to the very bottom and tap <strong>"Edit Actions..."</strong>, then tap the + icon next to "Add to Home Screen" — then go back and tap it.',
     };
   }
 
@@ -736,11 +736,11 @@
     const puzzleLabel = mode === "daily" ? "today's Crown Zones" : "a Crown Zones puzzle";
     let challenge;
     if (perfect) {
-      challenge = `I solved ${puzzleLabel} in ${timeStr} with no mistakes 👑 Think you can match it?`;
+      challenge = `I solved ${puzzleLabel} in ${timeStr} with no mistakes. Think you can match it?`;
     } else if (hintsUsed > 0) {
-      challenge = `I solved ${puzzleLabel} in ${timeStr} (used ${hintsUsed} hint${hintsUsed === 1 ? "" : "s"}) 👑 Can you beat me without hints?`;
+      challenge = `I solved ${puzzleLabel} in ${timeStr} (used ${hintsUsed} hint${hintsUsed === 1 ? "" : "s"}). Can you beat me without hints?`;
     } else {
-      challenge = `I solved ${puzzleLabel} in ${timeStr} (${mistakes} mistake${mistakes === 1 ? "" : "s"}) 👑 Can you beat me?`;
+      challenge = `I solved ${puzzleLabel} in ${timeStr} (${mistakes} mistake${mistakes === 1 ? "" : "s"}). Can you beat me?`;
     }
     const rowEmoji = puzzle.solution.map((c, r) => REGION_EMOJI[puzzle.regions[r][c]]).join("");
     const sizeLine = `${puzzle.n}×${puzzle.n} zones`;
@@ -793,8 +793,8 @@
     }
     try {
       await navigator.clipboard.writeText(text);
-      els.shareBtn.textContent = "✅ Copied!";
-      setTimeout(() => els.shareBtn.textContent = "🔗 Share Result", 1500);
+      els.shareBtn.textContent = "Copied!";
+      setTimeout(() => els.shareBtn.textContent = "Share Result", 1500);
     } catch {
       alert(text);
     }
@@ -814,7 +814,7 @@
       e.preventDefault();
       deferredInstallPrompt = e;
       if (localStorage.getItem("crownzones:dismissedInstall")) return;
-      els.installBannerText.textContent = "📲 Install Crown Zones as an app for the full experience.";
+      els.installBannerText.textContent = "Install Crown Zones as an app for the full experience.";
       els.installBtn.classList.remove("hidden");
       els.installBanner.classList.remove("hidden");
     });
@@ -835,7 +835,7 @@
     els.addToHomeStep1.innerHTML = instr.step1;
     els.addToHomeStep2.innerHTML = instr.step2;
     if (instr.tip) {
-      els.addToHomeTip.innerHTML = "💡 " + instr.tip;
+      els.addToHomeTip.innerHTML = instr.tip;
       els.addToHomeTip.classList.remove("hidden");
     } else {
       els.addToHomeTip.classList.add("hidden");
@@ -859,7 +859,7 @@
     if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
       if (isIOS() && !isStandalone()) {
         els.notifyBtn.classList.remove("hidden");
-        els.notifyBtn.textContent = "🔔 Add to Home Screen for reminders";
+        els.notifyBtn.textContent = "Add to Home Screen for reminders";
         els.notifyBtn.addEventListener("click", showAddToHomeScreenModal);
       }
       return;
@@ -923,7 +923,7 @@
   }
 
   function setNotifyBtnState(subscribed) {
-    els.notifyBtn.textContent = subscribed ? "🔕 Turn off daily reminder" : "🔔 Get a daily reminder";
+    els.notifyBtn.textContent = subscribed ? "Turn off daily reminder" : "Get a daily reminder";
   }
 
   // ---------- Init ----------
