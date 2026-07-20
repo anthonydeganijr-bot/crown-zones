@@ -12,7 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#4b6cff">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon-v2.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Crown Zones">
@@ -85,6 +85,7 @@
     content: ""; position: absolute; inset: 3px; border: 2px solid var(--bad); border-radius: 6px;
   }
   .cell .mark { color: rgba(255,255,255,0.95); font-weight: 800; font-size: 17px; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+  .crown-piece, .mini-crown { width: 66%; height: 66%; object-fit: contain; display: block; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.35)); }
   .toolbar { display: flex; gap: 8px; margin-top: 16px; }
   button {
     border: none; border-radius: 12px; font-weight: 600; cursor: pointer;
@@ -177,23 +178,23 @@
     <div class="rules-visual rules-visual-compact" aria-hidden="true">
       <div class="rule-example rule-example-sm">
         <div class="mini-board mini-board-sm" style="grid-template-columns:repeat(3,18px)">
-          <div class="mini-cell" style="background:#f28b82">👑</div>
+          <div class="mini-cell" style="background:#f28b82"><img class="mini-crown" src="crown-piece.png" alt="crown"></div>
           <div class="mini-cell" style="background:#fbbc04"></div>
           <div class="mini-cell" style="background:#4b6cff"></div>
           <div class="mini-cell" style="background:#f28b82"></div>
-          <div class="mini-cell" style="background:#fbbc04">👑</div>
+          <div class="mini-cell" style="background:#fbbc04"><img class="mini-crown" src="crown-piece.png" alt="crown"></div>
           <div class="mini-cell" style="background:#4b6cff"></div>
           <div class="mini-cell" style="background:#f28b82"></div>
           <div class="mini-cell" style="background:#fbbc04"></div>
-          <div class="mini-cell" style="background:#4b6cff">👑</div>
+          <div class="mini-cell" style="background:#4b6cff"><img class="mini-crown" src="crown-piece.png" alt="crown"></div>
         </div>
         <p class="rule-caption-mini">✓</p>
       </div>
       <div class="rule-example rule-example-sm">
         <div class="mini-board mini-board-sm" style="grid-template-columns:repeat(3,18px)">
-          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell conflict-demo" style="background:#eef0ff"><img class="mini-crown" src="crown-piece.png" alt="crown"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
-          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell conflict-demo" style="background:#eef0ff"><img class="mini-crown" src="crown-piece.png" alt="crown"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
@@ -205,11 +206,11 @@
       </div>
       <div class="rule-example rule-example-sm">
         <div class="mini-board mini-board-sm" style="grid-template-columns:repeat(3,18px)">
-          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell conflict-demo" style="background:#eef0ff"><img class="mini-crown" src="crown-piece.png" alt="crown"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
-          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell conflict-demo" style="background:#eef0ff"><img class="mini-crown" src="crown-piece.png" alt="crown"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
@@ -284,23 +285,23 @@
     <div class="rules-visual">
       <div class="rule-example">
         <div class="mini-board" style="grid-template-columns:repeat(3,28px)">
-          <div class="mini-cell" style="background:#f28b82">👑</div>
+          <div class="mini-cell" style="background:#f28b82"><img class="mini-crown" src="crown-piece.png" alt="crown"></div>
           <div class="mini-cell" style="background:#fbbc04"></div>
           <div class="mini-cell" style="background:#4b6cff"></div>
           <div class="mini-cell" style="background:#f28b82"></div>
-          <div class="mini-cell" style="background:#fbbc04">👑</div>
+          <div class="mini-cell" style="background:#fbbc04"><img class="mini-crown" src="crown-piece.png" alt="crown"></div>
           <div class="mini-cell" style="background:#4b6cff"></div>
           <div class="mini-cell" style="background:#f28b82"></div>
           <div class="mini-cell" style="background:#fbbc04"></div>
-          <div class="mini-cell" style="background:#4b6cff">👑</div>
+          <div class="mini-cell" style="background:#4b6cff"><img class="mini-crown" src="crown-piece.png" alt="crown"></div>
         </div>
         <p class="rule-caption">✓ One crown per zone</p>
       </div>
       <div class="rule-example">
         <div class="mini-board" style="grid-template-columns:repeat(3,28px)">
-          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell conflict-demo" style="background:#eef0ff"><img class="mini-crown" src="crown-piece.png" alt="crown"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
-          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell conflict-demo" style="background:#eef0ff"><img class="mini-crown" src="crown-piece.png" alt="crown"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
@@ -312,11 +313,11 @@
       </div>
       <div class="rule-example">
         <div class="mini-board" style="grid-template-columns:repeat(3,28px)">
-          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell conflict-demo" style="background:#eef0ff"><img class="mini-crown" src="crown-piece.png" alt="crown"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
-          <div class="mini-cell conflict-demo" style="background:#eef0ff">👑</div>
+          <div class="mini-cell conflict-demo" style="background:#eef0ff"><img class="mini-crown" src="crown-piece.png" alt="crown"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
           <div class="mini-cell" style="background:#eef0ff"></div>
@@ -325,7 +326,7 @@
         <p class="rule-caption">✕ Touching, even diagonally</p>
       </div>
     </div>
-    <p>Tap a cell to cycle: empty → ✕ note → 👑 crown. Stuck? You get 3 hints per puzzle.</p>
+    <p>Tap a cell to cycle: empty → ✕ note → crown. Stuck? You get 3 hints per puzzle.</p>
     <p class="modal-foot">One shared daily puzzle for everyone · unlimited random puzzles anytime.</p>
     <button class="btn-primary" id="howToPlayCloseBtn" style="width:100%">Let's play!</button>
   </div>
@@ -535,7 +536,7 @@
         div.style.cssText += cellBorder();
         const state = cellState[r][c];
         if (state === 1) div.innerHTML = '<span class="mark">✕</span>';
-        else if (state === 2) div.textContent = "👑";
+        else if (state === 2) div.innerHTML = '<img class="crown-piece" src="crown-piece.png" alt="crown">';
         div.addEventListener("click", () => onCellClick(r, c));
         els.board.appendChild(div);
       }
